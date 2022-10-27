@@ -9,11 +9,10 @@ class Animal:
 
 
 class Deer(Animal):
-    deer_count = 0
 
     def __init__(self, age_in_months, required_food_in_kgs, breed):
         super().__init__(age_in_months, required_food_in_kgs, breed)
-        type(self).deer_count += 1
+
 
     def grow(self):
             self.required_food_in_kgs += 2
@@ -40,14 +39,14 @@ class Lion(Animal):
         print("Breathe in air")
 
     def hunt(self, other):
-        length=len(nehru_zoological_park.animals_in_zoo)
-        for animal in nehru_zoological_park.animals_in_zoo:
-            breed=animal.breed
-            if breed=="ELK":
-                nehru_zoological_park.animals_in_zoo.remove(animal)
+        for i in other.animals_in_zoo:
+            if i.__class__.__name__=="Deer":
+                other.animals_in_zoo.remove(i)
                 break
         else:
             print("No deers to hunt")
+
+
 
 
 
@@ -66,22 +65,17 @@ class Shark(Animal):
 
 
     def hunt(self, other):
-        length=len(nehru_zoological_park.animals_in_zoo)
-        for animal in nehru_zoological_park.animals_in_zoo:
-            breed=animal.breed
-            if breed=="ELK":
-                nehru_zoological_park.animals_in_zoo.remove(animal)
-                break
-        else:
-            print("No deers to hunt")
+            for i in other.animals_in_zoo:
+                if i.__class__.__name__ == "GoldFish":
+                    other.animals_in_zoo.remove(i)
+            else:
+                print("No fish to hunt")
 
 
 class GoldFish(Animal):
-    fish_count = 0
 
     def __init__(self, age_in_months, required_food_in_kgs, breed):
         super().__init__(age_in_months, required_food_in_kgs, breed)
-        type(self).fish_count += 1
 
     def grow(self):
             self.required_food_in_kgs += 0.2
@@ -98,6 +92,7 @@ class GoldFish(Animal):
 class Snake(Animal):
     def __init__(self, age_in_months, required_food_in_kgs, breed):
         super().__init__(age_in_months, required_food_in_kgs, breed)
+        self.animal="SNAKE"
 
     def grow(self):
             self.required_food_in_kgs += 0.5
@@ -111,27 +106,23 @@ class Snake(Animal):
 
 
     def hunt(self, other):
-        length = len(nehru_zoological_park.animals_in_zoo)
-        for animal in nehru_zoological_park.animals_in_zoo:
-            breed = animal.breed
-            if breed == "ELK":
-                nehru_zoological_park.animals_in_zoo.remove(animal)
-                break
+        for i in other.animals_in_zoo:
+            if i.__class__.__name__=="Deer":
+                other.animals_in_zoo.remove(i)
         else:
             print("No deers to hunt")
 
 
 class Zoo():
-    count_of_all_animals = 0
+    count = 0
 
     @classmethod
-    def count(cls):
-        return cls.count_of_all_animals
+    def count_animals_in_all_zoos(cls):
+        return cls.count
 
     def __init__(self):
         self.animals_in_zoo = []
         self.reserved_food_in_kgs = 0
-        type(self).count_of_all_animals += 1
 
     def add_food_to_reserve(self, other):
         self.reserved_food_in_kgs += other
@@ -143,10 +134,15 @@ class Zoo():
 
     def add_animal(self, Animal):
         self.animals_in_zoo.append(Animal)
-        # return len(self.animals_in_zoo)
+        type(self).count += 1
     @staticmethod
     def count_animals_in_given_zoos(other):
-        return len(other)
+        count=0
+        for i in other:
+            for j in i.animals_in_zoo:
+                count+=1
+        return count
+
 
     def feed(self, other):
         self.other = other
@@ -156,21 +152,17 @@ class Zoo():
 zoo = Zoo()
 gold_fish = GoldFish(age_in_months=1, breed="Nemo", required_food_in_kgs=0.5)
 zoo.add_animal(gold_fish)
+zoo.count_animals()
 nehru_zoological_park = Zoo()
-zoo.add_food_to_reserve(10000000)
 lion = Lion(age_in_months=1, breed="African Lion", required_food_in_kgs=15)
 nehru_zoological_park.add_animal(lion)
 print(nehru_zoological_park.count_animals())
-print(Zoo.count())
-print( Zoo.count_animals_in_given_zoos([zoo]))
+print(Zoo.count_animals_in_all_zoos())
+print(Zoo.count_animals_in_given_zoos([zoo]))
 deer = Deer(age_in_months=1, breed="ELK", required_food_in_kgs=10)
 nehru_zoological_park.add_animal(deer)
-print( nehru_zoological_park.count_animals())
+print(nehru_zoological_park.count_animals())
 lion.hunt(nehru_zoological_park)
 print(nehru_zoological_park.count_animals())
 lion.hunt(nehru_zoological_park)
-with open('zoo.py','w') as f:
-    f.write(" ")
-
-
 
